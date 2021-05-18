@@ -17,21 +17,39 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
-	"fmt"
+	"log"
 
 	"github.com/spf13/cobra"
 )
 
 // reqCmd represents the req command
 var reqCmd = &cobra.Command{
-	Use:   "req",
-	Short: "Create an HTTP request",
-	Long:  `Use flags to create an HTTP request and test it with an endpoint.`,
-	Args:  cobra.ExactArgs(1),
+	Use:     "request",
+	Short:   "Create an HTTP request",
+	Long:    `Use flags to create an HTTP request and test it with an endpoint.`,
+	Aliases: []string{"req", "r"},
+	Args:    cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("req called")
+		switch args[0] {
+		case "get":
+			makeGETRequest()
+		case "post":
+			makePOSTRequest()
+		default:
+			log.Fatalf("Invalid HTTP request %s. Please specify a valid request.", args[0])
+
+		}
+
 	},
 }
 
 func init() {
+}
+
+func makeGETRequest() {
+	log.Print("get")
+}
+
+func makePOSTRequest() {
+	log.Print("post")
 }
