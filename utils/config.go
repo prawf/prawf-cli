@@ -11,12 +11,12 @@ const (
 	ConfigType = "json"
 )
 
-type config struct {
+type PrawfConfig struct {
 	Hostname string `json:"hostname"`
 	Port     string `json:"port"`
 }
 
-func GetConf(configPath string, configName string) *config {
+func GetConf(configPath string, configName string) *PrawfConfig {
 	viper.AddConfigPath(configPath)
 	viper.SetConfigName(configName)
 	viper.SetConfigType(ConfigType)
@@ -26,7 +26,7 @@ func GetConf(configPath string, configName string) *config {
 		fmt.Printf("%v", err)
 	}
 
-	conf := &config{}
+	conf := &PrawfConfig{}
 	err = viper.Unmarshal(conf)
 	if err != nil {
 		fmt.Printf("unable to decode into config struct, %v", err)
