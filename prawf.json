@@ -2,15 +2,15 @@
   "current-test": "sample-test",
   "tests": {
     "sample-test": {
-      "URL": "testURL",
-      "Methods": {
+      "url": "testURL",
+      "methods": {
         "testMethod": {
-          "Path": "testPath",
-          "Method": "testMethod",
-          "Query": {
+          "path": "testPath",
+          "method": "testMethod",
+          "query": {
             "testQa": "def"
           },
-          "Body": {
+          "body": {
             "testQb": "ghi"
           }
         }

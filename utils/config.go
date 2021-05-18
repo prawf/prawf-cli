@@ -4,7 +4,6 @@ import (
 	"errors"
 	"io/ioutil"
 	"os"
-	"path/filepath"
 
 	"github.com/spf13/viper"
 )
@@ -15,35 +14,33 @@ const (
 )
 
 type PrawfConfig struct {
-	Tests       map[string]Test `mapstructure:"tests"`
-	CurrentTest string          `mapstructure:"current-test"`
+	Tests       map[string]Test `json:"tests"`
+	CurrentTest string          `json:"current-test"`
 }
 
 type Test struct {
-	URL     string            `mapstructure:"url"`
-	Methods map[string]Method `mapstructure:"methods"`
+	URL     string            `json:"url"`
+	Methods map[string]Method `json:"methods"`
 }
 
 type Method struct {
-	Path   string                 `mapstructure:"path"`
-	Method string                 `mapstructure:"method"`
-	Query  map[string]interface{} `mapstructure:"query,omitempty"`
-	Body   map[string]interface{} `mapstructure:"body,omitempty"`
+	Path   string                 `json:"path"`
+	Method string                 `json:"method"`
+	Query  map[string]interface{} `json:"query,omitempty"`
+	Body   map[string]interface{} `json:"body,omitempty"`
 }
 
-func CreateConfigFile(configPath string, configName string) (string, error) {
-	fileName := configName + "." + ConfigType
-	filePath := filepath.Join(configPath, fileName)
-	if _, err := os.Stat(filePath); os.IsNotExist(err) {
-		_, err := os.Create(filePath)
-		if err != nil {
-			return "", err
-		}
-		err = ioutil.WriteFile(filePath, []byte("{}"), 0644)
-		if err != nil {
-			return "", err
-		}
+func CreateConfigFile(filePath string) (string, error) {
+
+	_, err := os.Create(filePath)
+	if err != nil {
+		return "", err
 	}
+	err = ioutil.WriteFile(filePath, []byte("{}"), 0644)
+	if err != nil {
+		return "", err
+	}
+
 	return filePath, nil
 }
 

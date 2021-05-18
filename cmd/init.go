@@ -17,7 +17,9 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
+	"fmt"
 	"log"
+	"os"
 
 	"github.com/prawf/prawf-cli/utils"
 
@@ -54,7 +56,15 @@ func init() {
 }
 
 func initConfig(cp string, cn string) {
-	filePath, err := utils.CreateConfigFile(cp, cn)
+	filePath, fileName := utils.GetFilePath(cp, cn)
+	if utils.FileExists(filePath) {
+		if userResponse := utils.AskForConfirmation(fmt.Sprintf("%s already exists. Do you want to rewrite the file?", fileName)); !userResponse {
+			return
+		}
+		os.Remove(filePath)
+	}
+
+	filePath, err := utils.CreateConfigFile(filePath)
 
 	if err != nil {
 		log.Fatal(err)
