@@ -30,7 +30,6 @@ It lets you define and run tests on your API endpoints and/or make individual re
 func init() {
 
 	commands := []*cobra.Command{
-		initCmd,
 		runCmd,
 		reqCmd,
 	}
