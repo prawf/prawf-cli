@@ -17,7 +17,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/prawf/prawf-cli/utils"
@@ -55,8 +54,15 @@ func init() {
 }
 
 func initConfig(cp string, cn string) {
-	conf := utils.GetConf(cp, cn)
+	filePath, err := utils.CreateConfigFile(cp, cn)
 
-	fmt.Printf("Hostname: %v\n", conf.Hostname)
-	fmt.Printf("Port: %v\n", conf.Port)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = utils.AddTestsToConfig("sample-test", utils.TemplateTest, filePath)
+
+	if err != nil {
+		log.Fatal(err)
+	}
 }

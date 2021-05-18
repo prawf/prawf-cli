@@ -1,0 +1,17 @@
+{
+    "tests": {
+        "test1": {
+            "url": "test",
+            "methods": {
+                "get": {
+                    "path": "jdhasj",
+                    "method": "GET",
+                    "query": {
+                        "abc":"def"
+                    }
+                }
+            }
+        }
+    },
+    "current-test": "test1"
+}

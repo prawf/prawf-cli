@@ -1,4 +1,20 @@
 {
-    "hostname": "sdasdasd",
-    "port": "gvasdasdasddh"
+  "current-test": "sample-test",
+  "tests": {
+    "sample-test": {
+      "URL": "testURL",
+      "Methods": {
+        "testMethod": {
+          "Path": "testPath",
+          "Method": "testMethod",
+          "Query": {
+            "testQa": "def"
+          },
+          "Body": {
+            "testQb": "ghi"
+          }
+        }
+      }
+    }
+  }
 }
