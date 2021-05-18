@@ -14,10 +14,24 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
-package main
+package cmd
 
-import "github.com/prawf/prawf-cli/cmd"
+import (
+	"fmt"
 
-func main() {
-	cmd.Execute()
+	"github.com/spf13/cobra"
+)
+
+// reqCmd represents the req command
+var reqCmd = &cobra.Command{
+	Use:   "req",
+	Short: "Create an HTTP request",
+	Long:  `Use flags to create an HTTP request and test it with an endpoint.`,
+	Args:  cobra.ExactArgs(1),
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("req called")
+	},
+}
+
+func init() {
 }
