@@ -17,18 +17,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
-	"fmt"
-	"log"
-	"os"
-
-	"github.com/prawf/prawf-cli/utils"
-
 	"github.com/spf13/cobra"
-)
-
-var (
-	configPath string
-	configName string
 )
 
 // initCmd represents the init command
@@ -38,41 +27,7 @@ var initCmd = &cobra.Command{
 	Long: `Create and initialise prawf.json file in the current working directory.
 
 The file will be initialised with default values.`,
+	Args: cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
-		initConfig(configPath, configName)
-
 	},
-}
-
-func init() {
-
-	cp, err := utils.GetDir()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	initCmd.Flags().StringVarP(&configPath, "path", "p", cp, "path to create the prawf.json file")
-	initCmd.Flags().StringVarP(&configName, "name", "n", utils.ConfigName, "name of the config file")
-}
-
-func initConfig(cp string, cn string) {
-	filePath, fileName := utils.GetFilePath(cp, cn)
-	if utils.FileExists(filePath) {
-		if userResponse := utils.AskForConfirmation(fmt.Sprintf("%s already exists. Do you want to rewrite the file?", fileName)); !userResponse {
-			return
-		}
-		os.Remove(filePath)
-	}
-
-	filePath, err := utils.CreateConfigFile(filePath)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	err = utils.AddTestsToConfig("sample-test", utils.TemplateTest, filePath)
-
-	if err != nil {
-		log.Fatal(err)
-	}
 }

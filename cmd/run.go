@@ -17,7 +17,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
-	"fmt"
+	"log"
 
 	"github.com/spf13/cobra"
 )
@@ -25,18 +25,20 @@ import (
 // runCmd represents the run command
 var runCmd = &cobra.Command{
 	Use:   "run",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+	Short: "Run a test defined in the prawf.json file",
+	Long: `Run a test defined in your prawf.json file.
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+Runs the test marked as 'current-test' by default.`,
+	Args: cobra.MaximumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("run called")
+		switch args[0] {
+		case "get":
+			makeGETRequest()
+		case "post":
+			makePOSTRequest()
+		default:
+			log.Fatalf("Invalid HTTP request %s. Please specify a valid request.", args[0])
+
+		}
 	},
-}
-
-func init() {
-
 }

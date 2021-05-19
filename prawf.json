@@ -2,16 +2,28 @@
   "current-test": "sample-test",
   "tests": {
     "sample-test": {
-      "url": "testURL",
+      "url": "https://jsonplaceholder.typicode.com",
       "methods": {
-        "testMethod": {
-          "path": "testPath",
-          "method": "testMethod",
+        "get-post": {
+          "path": "/posts",
+          "method": "get",
+          "header": {
+            "Content-type": "application/json; charset=UTF-8"
+          },
           "query": {
-            "testQa": "def"
+            "id": 1
+          }
+        },
+        "post-post": {
+          "path": "/posts",
+          "method": "post",
+          "header": {
+            "Content-type": "application/json; charset=UTF-8"
           },
           "body": {
-            "testQb": "ghi"
+            "body": "If you haven't already, check out prawf to test your REST API endpoints",
+            "title": "prawf is amazing!",
+            "userId": 1
           }
         }
       }

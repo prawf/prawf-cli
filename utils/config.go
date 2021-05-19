@@ -26,22 +26,23 @@ type Test struct {
 type Method struct {
 	Path   string                 `json:"path"`
 	Method string                 `json:"method"`
+	Header map[string]interface{} `json:"header,omitempty"`
 	Query  map[string]interface{} `json:"query,omitempty"`
 	Body   map[string]interface{} `json:"body,omitempty"`
 }
 
-func CreateConfigFile(filePath string) (string, error) {
+func CreateConfigFile(filePath string) error {
 
 	_, err := os.Create(filePath)
 	if err != nil {
-		return "", err
+		return err
 	}
 	err = ioutil.WriteFile(filePath, []byte("{}"), 0644)
 	if err != nil {
-		return "", err
+		return err
 	}
 
-	return filePath, nil
+	return nil
 }
 
 func GetPrawfConfig(v *viper.Viper) (*PrawfConfig, error) {

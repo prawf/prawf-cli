@@ -1,19 +1,33 @@
 package utils
 
 var TemplateTest = Test{
-	URL: "testURL",
+	URL: "https://jsonplaceholder.typicode.com",
 	Methods: map[string]Method{
-		"testMethod": TemplateMethod,
+		"get-post":  TemplateGETMethod,
+		"post-post": TemplatePOSTMethod,
 	},
 }
 
-var TemplateMethod = Method{
-	Path:   "testPath",
-	Method: "testMethod",
+var TemplateGETMethod = Method{
+	Path:   "/posts",
+	Method: "get",
+	Header: map[string]interface{}{
+		"Content-type": "application/json; charset=UTF-8",
+	},
 	Query: map[string]interface{}{
-		"testQa": "def",
+		"id": 1,
+	},
+}
+
+var TemplatePOSTMethod = Method{
+	Path:   "/posts",
+	Method: "post",
+	Header: map[string]interface{}{
+		"Content-type": "application/json; charset=UTF-8",
 	},
 	Body: map[string]interface{}{
-		"testQb": "ghi",
+		"title":  "prawf is amazing!",
+		"body":   "If you haven't already, check out prawf to test your REST API endpoints",
+		"userId": 1,
 	},
 }
