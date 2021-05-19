@@ -1,5 +1,5 @@
 {
-  "current-test": "sample-test",
+  "current": "sample-test",
   "tests": {
     "sample-test": {
       "url": "https://jsonplaceholder.typicode.com",

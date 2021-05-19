@@ -14,8 +14,8 @@ const (
 )
 
 type PrawfConfig struct {
-	Tests       map[string]Test `json:"tests"`
-	CurrentTest string          `json:"current-test"`
+	Current string          `json:"current"`
+	Tests   map[string]Test `json:"tests"`
 }
 
 type Test struct {
@@ -29,6 +29,14 @@ type Method struct {
 	Header map[string]interface{} `json:"header,omitempty"`
 	Query  map[string]interface{} `json:"query,omitempty"`
 	Body   map[string]interface{} `json:"body,omitempty"`
+}
+
+func (pc *PrawfConfig) GetTest() (Test, error) {
+	if test, e := pc.Tests[pc.Current]; e {
+		return test, nil
+	}
+
+	return Test{}, errors.New("Current test " + pc.Current + " not defined.")
 }
 
 func CreateConfigFile(filePath string) error {
@@ -47,7 +55,7 @@ func CreateConfigFile(filePath string) error {
 
 func GetPrawfConfig(v *viper.Viper) (*PrawfConfig, error) {
 	conf := &PrawfConfig{}
-	err := v.Unmarshal(conf)
+	err := v.Unmarshal(&conf)
 	if err != nil {
 		return nil, err
 	}
@@ -82,7 +90,7 @@ func AddTestsToConfig(testName string, test Test, filePath string) error {
 	conf.Tests[testName] = test
 
 	viper.Set("tests", conf.Tests)
-	viper.Set("current-test", testName)
+	viper.Set("current", testName)
 
 	err = viper.WriteConfig()
 	if err != nil {

@@ -32,24 +32,11 @@ var reqCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		switch args[0] {
 		case "get":
-			makeGETRequest()
 		case "post":
-			makePOSTRequest()
 		default:
 			log.Fatalf("Invalid HTTP request %s. Please specify a valid request.", args[0])
 
 		}
 
 	},
-}
-
-func init() {
-}
-
-func makeGETRequest() {
-	log.Print("get")
-}
-
-func makePOSTRequest() {
-	log.Print("post")
 }

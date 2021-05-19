@@ -81,6 +81,13 @@ func loadConfig() {
 	}
 
 	viper.SetConfigFile(filePath)
+
+	err := viper.ReadInConfig()
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	log.Printf("%s loaded.", fileName)
 }
 
