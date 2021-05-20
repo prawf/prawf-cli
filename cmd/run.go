@@ -52,8 +52,15 @@ Runs the test marked as 'current' by default.`,
 		if err != nil {
 			log.Fatal(err)
 		}
+
+		log.WithFields(log.Fields{
+			"test": conf.Current,
+			"url":  test.URL,
+		}).Info("Running test.")
+
 		// Perform all the tests mentioned in the config file
 		for _, method := range test.Methods {
+			fmt.Print("\n")
 			MakeRequest(test.URL, method.Path, method.Method, method.Header, method.Query, method.Body)
 		}
 	},
@@ -94,6 +101,17 @@ func MakeRequest(
 
 	req.URL.RawQuery = q.Encode()
 
+	log.WithFields(log.Fields{
+		"method": strings.ToUpper(method),
+		"path":   path,
+	}).Info()
+
+	log.WithFields(log.Fields{
+		"header": header,
+		"query":  query,
+		"body":   body,
+	}).Debug()
+
 	// Create a client and make the request
 	client := &http.Client{}
 
@@ -103,9 +121,19 @@ func MakeRequest(
 		log.Fatal(err)
 	}
 
+	if resp.StatusCode >= 200 && resp.StatusCode <= 299 {
+		log.WithFields(log.Fields{
+			"status code": resp.Status,
+		}).Info()
+	} else {
+		log.WithFields(log.Fields{
+			"status code": resp.Status,
+		}).Error()
+	}
+
 	// If the response is HTML, then most likely an error so return that
 	if utils.ContentTypeIsHTML(resp) {
-		log.WithField("response", resp).Fatal("Invalid request.")
+		log.WithField("response", resp).Error()
 	}
 
 	defer resp.Body.Close()
