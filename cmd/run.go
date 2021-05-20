@@ -23,6 +23,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"strings"
 
 	"github.com/prawf/prawf-cli/utils"
 	"github.com/spf13/cobra"
@@ -38,6 +39,7 @@ var runCmd = &cobra.Command{
 Runs the test marked as 'current-test' by default.`,
 	Args: cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
+
 		conf, err := utils.GetPrawfConfig(viper.GetViper())
 
 		if err != nil {
@@ -71,7 +73,7 @@ func MakeRequest(
 		log.Fatal(err)
 	}
 
-	req, err := http.NewRequest(method, url+path, bodyRequest)
+	req, err := http.NewRequest(strings.ToUpper(method), url+path, bodyRequest)
 
 	if err != nil {
 		log.Fatal(err)
@@ -82,10 +84,14 @@ func MakeRequest(
 		req.Header.Add(key, v)
 	}
 
+	q := req.URL.Query()
+
 	for key, value := range query {
 		v := fmt.Sprintf("%v", value)
-		req.Header.Add(key, v)
+		q.Add(key, v)
 	}
+
+	req.URL.RawQuery = q.Encode()
 
 	client := &http.Client{}
 
@@ -93,6 +99,11 @@ func MakeRequest(
 
 	if err != nil {
 		log.Fatal(err)
+	}
+
+	if utils.ContentTypeIsHTML(resp) {
+		log.Print(resp)
+		log.Fatal("Invalid request.")
 	}
 
 	defer resp.Body.Close()
@@ -103,14 +114,7 @@ func MakeRequest(
 		log.Fatal(err)
 	}
 
-	var data interface{}
-
-	err = json.Unmarshal(b, &data)
-
-	if err != nil {
-		log.Fatal(err)
-	}
+	data := string(b)
 
 	log.Println(data)
-
 }

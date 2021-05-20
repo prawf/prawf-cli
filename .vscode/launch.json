@@ -10,7 +10,7 @@
             "request": "launch",
             "mode": "auto",
             "program": "/home/navendu/Code/prawf-cli/main.go",
-            "args": ["init"]
+            "args": ["run"]
         }
     ]
 }

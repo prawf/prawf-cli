@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 	"path/filepath"
 	"strings"
@@ -53,4 +54,16 @@ func GetFilePath(configPath string, configName string) (string, string) {
 	filePath := filepath.Join(configPath, fileName)
 
 	return filePath, fileName
+}
+
+// ContentTypeIsHTML Checks if the response is an HTML resposnse
+func ContentTypeIsHTML(resp *http.Response) bool {
+	ctString := strings.Split(resp.Header.Get("Content-Type"), ";")
+	if len(ctString) < 1 {
+		return false
+	}
+	if ctString[0] == "text/html" {
+		return true
+	}
+	return false
 }
