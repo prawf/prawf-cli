@@ -13,6 +13,7 @@ const (
 	ConfigType = "json"
 )
 
+// PrawfConfig represents the structure of the config file (prawf.json)
 type PrawfConfig struct {
 	Current string          `json:"current"`
 	Tests   map[string]Test `json:"tests"`
@@ -31,14 +32,16 @@ type Method struct {
 	Body   map[string]interface{} `json:"body,omitempty"`
 }
 
+// GetTest returns the configuration of the test mentioned in current
 func (pc *PrawfConfig) GetTest() (Test, error) {
 	if test, e := pc.Tests[pc.Current]; e {
 		return test, nil
 	}
 
-	return Test{}, errors.New("Current test " + pc.Current + " not defined.")
+	return Test{}, errors.New("current test " + pc.Current + " not defined")
 }
 
+// CreateConfigFile will create a new config file in the specified path
 func CreateConfigFile(filePath string) error {
 
 	_, err := os.Create(filePath)
@@ -53,6 +56,7 @@ func CreateConfigFile(filePath string) error {
 	return nil
 }
 
+// GetPrawfConfig returns the config file
 func GetPrawfConfig(v *viper.Viper) (*PrawfConfig, error) {
 	conf := &PrawfConfig{}
 	err := v.Unmarshal(&conf)
@@ -63,6 +67,7 @@ func GetPrawfConfig(v *viper.Viper) (*PrawfConfig, error) {
 	return conf, nil
 }
 
+// AddTestsToConfig will add a new test to the config file
 func AddTestsToConfig(testName string, test Test, filePath string) error {
 	viper.SetConfigFile(filePath)
 	err := viper.ReadInConfig()

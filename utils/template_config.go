@@ -1,5 +1,6 @@
 package utils
 
+// TemplateTest is the test with which the created config file is initialised
 var TemplateTest = Test{
 	URL: "https://jsonplaceholder.typicode.com",
 	Methods: map[string]Method{

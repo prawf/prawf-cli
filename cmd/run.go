@@ -21,11 +21,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"strings"
 
 	"github.com/prawf/prawf-cli/utils"
+
+	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -36,10 +37,10 @@ var runCmd = &cobra.Command{
 	Short: "Run a test defined in the prawf.json file",
 	Long: `Run a test defined in your prawf.json file.
 
-Runs the test marked as 'current-test' by default.`,
+Runs the test marked as 'current' by default.`,
 	Args: cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
-
+		// Load the config file
 		conf, err := utils.GetPrawfConfig(viper.GetViper())
 
 		if err != nil {
@@ -51,13 +52,14 @@ Runs the test marked as 'current-test' by default.`,
 		if err != nil {
 			log.Fatal(err)
 		}
-
+		// Perform all the tests mentioned in the config file
 		for _, method := range test.Methods {
 			MakeRequest(test.URL, method.Path, method.Method, method.Header, method.Query, method.Body)
 		}
 	},
 }
 
+// MakeRequest makes an HTTP request
 func MakeRequest(
 	url string,
 	path string,
@@ -65,25 +67,24 @@ func MakeRequest(
 	header map[string]interface{},
 	query map[string]interface{},
 	body map[string]interface{}) {
-
-	bodyJSON, err := json.Marshal(body)
-	bodyRequest := bytes.NewBuffer(bodyJSON)
+	// Create a request body
+	bodyRequest, err := newRequestBody(body)
 
 	if err != nil {
 		log.Fatal(err)
 	}
-
+	// Create a request with the specified method to the specified url with the created body
 	req, err := http.NewRequest(strings.ToUpper(method), url+path, bodyRequest)
 
 	if err != nil {
 		log.Fatal(err)
 	}
-
+	// Add all the specified headers
 	for key, value := range header {
 		v := fmt.Sprintf("%v", value)
 		req.Header.Add(key, v)
 	}
-
+	// Add all the specified queries
 	q := req.URL.Query()
 
 	for key, value := range query {
@@ -93,6 +94,7 @@ func MakeRequest(
 
 	req.URL.RawQuery = q.Encode()
 
+	// Create a client and make the request
 	client := &http.Client{}
 
 	resp, err := client.Do(req)
@@ -101,9 +103,9 @@ func MakeRequest(
 		log.Fatal(err)
 	}
 
+	// If the response is HTML, then most likely an error so return that
 	if utils.ContentTypeIsHTML(resp) {
-		log.Print(resp)
-		log.Fatal("Invalid request.")
+		log.WithField("response", resp).Fatal("Invalid request.")
 	}
 
 	defer resp.Body.Close()
@@ -114,7 +116,32 @@ func MakeRequest(
 		log.Fatal(err)
 	}
 
+	// Log the response
 	data := string(b)
 
-	log.Println(data)
+	log.Info(data)
 }
+
+// newRequestBody creates a new request body from the given interface
+func newRequestBody(body map[string]interface{}) (*bytes.Buffer, error) {
+	bodyJSON, err := json.Marshal(body)
+
+	if err != nil {
+		return nil, err
+	}
+	bodyRequest := bytes.NewBuffer(bodyJSON)
+
+	return bodyRequest, nil
+}
+
+// unmarshalJSON coverts the JSON response to a map
+// func unmarshalJSON(b []byte) (map[string]interface{}, error) {
+// 	var data map[string]interface{}
+
+// 	err := json.Unmarshal(b, &data)
+
+// 	if err != nil {
+// 		return nil, err
+// 	}
+// 	return data, nil
+// }

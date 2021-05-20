@@ -3,11 +3,12 @@ package utils
 import (
 	"bufio"
 	"fmt"
-	"log"
 	"net/http"
 	"os"
 	"path/filepath"
 	"strings"
+
+	log "github.com/sirupsen/logrus"
 )
 
 // GetDir gets the current working directory
@@ -41,6 +42,7 @@ func AskForConfirmation(s string) bool {
 	}
 }
 
+// FileExists will checks if a given file exists
 func FileExists(filePath string) bool {
 	info, err := os.Stat(filePath)
 	if os.IsNotExist(err) {
@@ -49,6 +51,7 @@ func FileExists(filePath string) bool {
 	return !info.IsDir()
 }
 
+// Returns the path to the config file
 func GetFilePath(configPath string, configName string) (string, string) {
 	fileName := configName + "." + ConfigType
 	filePath := filepath.Join(configPath, fileName)

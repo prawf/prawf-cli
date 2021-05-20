@@ -29,5 +29,8 @@ var initCmd = &cobra.Command{
 The file will be initialised with default values.`,
 	Args: cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
+		// This is an empty command, running this when the user first initialises will
+		// call loadConfig() function in root.go which will initialise the current directory
+		// with a prawf.json file
 	},
 }
