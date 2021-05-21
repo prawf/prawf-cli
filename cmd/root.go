@@ -31,6 +31,7 @@ var (
 	configPath string
 	configName string
 	outputFmt  string
+	verbose    bool
 )
 
 var rootCmd = &cobra.Command{
@@ -44,6 +45,8 @@ It lets you define and run tests on your API endpoints and/or make individual re
 func init() {
 	// Check if the passed in output flag is valid
 	cobra.OnInitialize(validateOutputFlag)
+	// Set the log level to "Debug" based on user flag
+	cobra.OnInitialize(setVerboseMode)
 	// Load the users config file (prawf.json) file when a command is run
 	cobra.OnInitialize(loadConfig)
 	// Set the default directory as the current directory
@@ -56,6 +59,7 @@ func init() {
 	rootCmd.PersistentFlags().StringVarP(&configPath, "path", "p", cp, "path to create the prawf.json file")
 	rootCmd.PersistentFlags().StringVarP(&configName, "name", "n", utils.ConfigName, "name of the config file")
 	rootCmd.PersistentFlags().StringVarP(&outputFmt, "output", "o", "", "format output (available values: [json])")
+	rootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "prints verbose/ debug logs")
 	// Initialise the commands
 	commands := []*cobra.Command{
 		initCmd,
@@ -123,5 +127,11 @@ func validateOutputFlag() {
 			return
 		}
 		log.WithField("output", outputFmt).Fatal("Invalid output format specified.")
+	}
+}
+
+func setVerboseMode() {
+	if verbose {
+		log.SetLevel(log.DebugLevel)
 	}
 }
