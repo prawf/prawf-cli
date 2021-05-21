@@ -13,7 +13,20 @@
     <a href="https://github.com/prawf/prawf-cli/blob/master/LICENSE" target="_blank">
         <img alt="GitHub" src="https://img.shields.io/github/license/prawf/prawf-cli">
     </a>
-    <a href="https%3A%2F%2Fctt.ac%2FMfgmK" target="_blank">
+    <a href="https://ctt.ac/MfgmK" target="_blank">
         <img alt="Twitter URL" src="https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Fctt.ac%2FMfgmK">
+    </a>
+</div>
+
+<p align="center">
+    <sub>
+        Made with ❤︎ by
+        <a href="https://github.com/navendu-pottekkat">Navendu Pottekkat</a>
+    </sub>
+</p>
+
+<div align="center">
+    <a href="https://github.com/prawf/prawf-cli" target="_blank">
+        <img alt="screenshot" src="https://raw.githubusercontent.com/prawf/prawf-cli/master/screenshot.png">
     </a>
 </div>
