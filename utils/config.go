@@ -20,16 +20,24 @@ type PrawfConfig struct {
 }
 
 type Test struct {
-	URL     string            `json:"url"`
-	Methods map[string]Method `json:"methods"`
+	URL     string   `json:"url"`
+	Methods []Method `json:"methods"`
 }
 
 type Method struct {
+	Name   string                 `json:"name"`
 	Path   string                 `json:"path"`
 	Method string                 `json:"method"`
 	Header map[string]interface{} `json:"header,omitempty"`
 	Query  map[string]interface{} `json:"query,omitempty"`
 	Body   map[string]interface{} `json:"body,omitempty"`
+	Expect Expect                 `json:"expect,omitempty"`
+}
+
+type Expect struct {
+	Contain map[string]interface{} `json:"contain,omitempty"`
+	Keys    []string               `json:"keys,omitempty"`
+	Equal   map[string]interface{} `json:"equal,omitempty"`
 }
 
 // GetTest returns the configuration of the test mentioned in current

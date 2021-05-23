@@ -37,7 +37,7 @@ var (
 var rootCmd = &cobra.Command{
 	Use:   "prawf",
 	Short: "API Testing made easy",
-	Long: `prawf is an all in one API testing framework.
+	Long: `prawf is a lightweight and easy-to-use HTTP API testing framework.
 	
 It lets you define and run tests on your API endpoints and/or make individual requests to your endpoints.`,
 }
@@ -65,6 +65,7 @@ func init() {
 		initCmd,
 		runCmd,
 		reqCmd,
+		testCmd,
 	}
 
 	rootCmd.AddCommand(commands...)

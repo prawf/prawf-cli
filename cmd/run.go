@@ -61,7 +61,7 @@ Runs the test marked as 'current' by default.`,
 		// Perform all the tests mentioned in the config file
 		for _, method := range test.Methods {
 			fmt.Print("\n")
-			MakeRequest(test.URL, method.Path, method.Method, method.Header, method.Query, method.Body)
+			MakeRequest(test.URL, method.Path, method.Method, method.Header, method.Query, method.Body, method.Name)
 		}
 	},
 }
@@ -73,44 +73,10 @@ func MakeRequest(
 	method string,
 	header map[string]interface{},
 	query map[string]interface{},
-	body map[string]interface{}) {
-	// Create a request body
-	bodyRequest, err := newRequestBody(body)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-	// Create a request with the specified method to the specified url with the created body
-	req, err := http.NewRequest(strings.ToUpper(method), url+path, bodyRequest)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-	// Add all the specified headers
-	for key, value := range header {
-		v := fmt.Sprintf("%v", value)
-		req.Header.Add(key, v)
-	}
-	// Add all the specified queries
-	q := req.URL.Query()
-
-	for key, value := range query {
-		v := fmt.Sprintf("%v", value)
-		q.Add(key, v)
-	}
-
-	req.URL.RawQuery = q.Encode()
-
-	log.WithFields(log.Fields{
-		"method": strings.ToUpper(method),
-		"path":   path,
-	}).Info()
-
-	log.WithFields(log.Fields{
-		"header": header,
-		"query":  query,
-		"body":   body,
-	}).Debug()
+	body map[string]interface{},
+	name string) {
+	// Create a new HTTP request
+	req := NewRequest(url, path, method, header, query, body, name)
 
 	// Create a client and make the request
 	client := &http.Client{}
@@ -173,3 +139,53 @@ func newRequestBody(body map[string]interface{}) (*bytes.Buffer, error) {
 // 	}
 // 	return data, nil
 // }
+
+func NewRequest(
+	url string,
+	path string,
+	method string,
+	header map[string]interface{},
+	query map[string]interface{},
+	body map[string]interface{},
+	name string) *http.Request {
+	// Create a request body
+	bodyRequest, err := newRequestBody(body)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+	// Create a request with the specified method to the specified url with the created body
+	req, err := http.NewRequest(strings.ToUpper(method), url+path, bodyRequest)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+	// Add all the specified headers
+	for key, value := range header {
+		v := fmt.Sprintf("%v", value)
+		req.Header.Add(key, v)
+	}
+	// Add all the specified queries
+	q := req.URL.Query()
+
+	for key, value := range query {
+		v := fmt.Sprintf("%v", value)
+		q.Add(key, v)
+	}
+
+	req.URL.RawQuery = q.Encode()
+
+	log.WithFields(log.Fields{
+		"name":   name,
+		"method": strings.ToUpper(method),
+		"path":   path,
+	}).Info()
+
+	log.WithFields(log.Fields{
+		"header": header,
+		"query":  query,
+		"body":   body,
+	}).Debug()
+
+	return req
+}
