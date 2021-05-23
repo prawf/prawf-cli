@@ -124,6 +124,10 @@ func TestResponse(
 
 		el := log.New().WithFields(log.Fields{"test": testResult})
 
+		if outputFmt == "json" {
+			el.Logger.SetFormatter(&log.JSONFormatter{})
+		}
+
 		if expect.Equal != nil {
 			el = el.WithFields(log.Fields{"equal": "yes"})
 		} else {
@@ -148,7 +152,7 @@ func TestResponse(
 			el.Error("Expected response.")
 		}
 
-		expect.Print(testResult)
+		expect.Print(testResult, outputFmt)
 	}
 
 }
