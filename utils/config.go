@@ -41,15 +41,30 @@ type Expect struct {
 	Equal   map[string]interface{} `json:"equal,omitempty"`
 }
 
-func (e *Expect) Print() {
+func (e *Expect) Print(testResult string) {
 	if e.Equal != nil {
-		log.WithField("type", "equal").Info(ToJSONToString(e.Equal))
+		el := log.New().WithField("type", "equal")
+		if testResult == "pass" {
+			el.Info(ToJSONToString(e.Equal))
+		} else {
+			el.Error(ToJSONToString(e.Equal))
+		}
 	}
 	if e.Contain != nil {
-		log.WithField("type", "contain").Info(ToJSONToString(e.Contain))
+		cl := log.New().WithField("type", "contain")
+		if testResult == "pass" {
+			cl.Info(ToJSONToString(e.Contain))
+		} else {
+			cl.Error(ToJSONToString(e.Contain))
+		}
 	}
 	if e.Keys != nil {
-		log.WithField("type", "keys").Info(e.Keys)
+		kl := log.New().WithField("type", "keys")
+		if testResult == "pass" {
+			kl.Info(e.Keys)
+		} else {
+			kl.Error(e.Keys)
+		}
 	}
 }
 

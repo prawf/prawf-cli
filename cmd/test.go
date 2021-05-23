@@ -140,8 +140,15 @@ func TestResponse(
 			el = el.WithFields(log.Fields{"keys": "no"})
 		}
 
-		el.Info("Expected response.")
-		expect.Print()
+		fmt.Print("\n")
+
+		if testResult == "pass" {
+			el.Info("Expected response.")
+		} else {
+			el.Error("Expected response.")
+		}
+
+		expect.Print(testResult)
 	}
 
 }
