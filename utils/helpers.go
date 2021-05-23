@@ -2,6 +2,7 @@ package utils
 
 import (
 	"bufio"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"os"
@@ -69,4 +70,12 @@ func ContentTypeIsHTML(resp *http.Response) bool {
 		return true
 	}
 	return false
+}
+
+func ToJSONToString(m map[string]interface{}) string {
+	j, err := json.MarshalIndent(m, "  ", "")
+	if err != nil {
+		log.Fatal(err)
+	}
+	return string(j)
 }

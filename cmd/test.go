@@ -21,6 +21,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"reflect"
 
 	"github.com/prawf/prawf-cli/utils"
 
@@ -100,6 +101,10 @@ func TestResponse(
 	}
 
 	// Log the response
+	log.WithFields(log.Fields{
+		"status code": resp.Status,
+	}).Info("Response received.")
+
 	log.Info(string(b))
 
 	// Get the json data
@@ -109,20 +114,95 @@ func TestResponse(
 		log.Fatal(err)
 	}
 
+	if !reflect.DeepEqual(utils.Expect{}, expect) {
+		var testResult string
+		if AssertResponse(data, expect) {
+			testResult = "pass"
+		} else {
+			testResult = "fail"
+		}
+
+		el := log.New().WithFields(log.Fields{"test": testResult})
+
+		if expect.Equal != nil {
+			el = el.WithFields(log.Fields{"equal": "yes"})
+		} else {
+			el = el.WithFields(log.Fields{"equal": "no"})
+		}
+		if expect.Contain != nil {
+			el = el.WithFields(log.Fields{"contain": "yes"})
+		} else {
+			el = el.WithFields(log.Fields{"contain": "no"})
+		}
+		if expect.Keys != nil {
+			el = el.WithFields(log.Fields{"keys": "yes"})
+		} else {
+			el = el.WithFields(log.Fields{"keys": "no"})
+		}
+
+		el.Info("Expected response.")
+		expect.Print()
+	}
+
+}
+
+func AssertResponse(data interface{}, expect utils.Expect) bool {
 	// The response could be an interface or an array of interface
 	if m, ok := data.([]interface{}); ok {
-		for _, item := range m {
-			Expect(item.(map[string]interface{}))
+		if expect.Equal != nil {
+			return AssertEqual(m, expect.Equal)
 		}
+		for _, item := range m {
+			if expect.Contain != nil {
+				if AssertContain(item.(map[string]interface{}), expect) {
+					return true
+				}
+			}
+			if expect.Keys != nil {
+				if AssertKeys(item.(map[string]interface{}), expect) {
+					return true
+				}
+			}
+		}
+		return false
 	} else if item, ok := data.(map[string]interface{}); ok {
-		Expect(item)
+		if expect.Equal != nil {
+			return AssertEqual(item, expect.Equal)
+		}
+		if expect.Contain != nil {
+			return AssertContain(item, expect)
+		}
+		if expect.Keys != nil {
+			return AssertKeys(item, expect)
+		}
 	} else {
 		log.Fatal("Invalid response received.")
 	}
+	return false
 }
 
-func Expect(item map[string]interface{}) {
-	// for key, value := range item {
-	// 	log.Info(key, value)
-	// }
+func AssertEqual(r interface{}, e interface{}) bool {
+	return reflect.DeepEqual(r, e)
+}
+
+func AssertContain(item map[string]interface{}, expect utils.Expect) bool {
+	for key, value := range expect.Contain {
+		if rValue, ok := item[key]; ok {
+			if value != rValue {
+				return false
+			}
+		} else {
+			return false
+		}
+	}
+	return true
+}
+
+func AssertKeys(item map[string]interface{}, expect utils.Expect) bool {
+	for _, key := range expect.Keys {
+		if _, ok := item[key]; !ok {
+			return false
+		}
+	}
+	return true
 }

@@ -90,11 +90,11 @@ func MakeRequest(
 	if resp.StatusCode >= 200 && resp.StatusCode <= 299 {
 		log.WithFields(log.Fields{
 			"status code": resp.Status,
-		}).Info()
+		}).Info("Response received.")
 	} else {
 		log.WithFields(log.Fields{
 			"status code": resp.Status,
-		}).Error()
+		}).Error("Response received.")
 	}
 
 	// If the response is HTML, then most likely an error so return that
@@ -179,13 +179,13 @@ func NewRequest(
 		"name":   name,
 		"method": strings.ToUpper(method),
 		"path":   path,
-	}).Info()
+	}).Info("Creating request.")
 
 	log.WithFields(log.Fields{
 		"header": header,
 		"query":  query,
 		"body":   body,
-	}).Debug()
+	}).Debug("Adding payload.")
 
 	return req
 }

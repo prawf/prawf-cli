@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"os"
 
+	log "github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 )
 
@@ -38,6 +39,18 @@ type Expect struct {
 	Contain map[string]interface{} `json:"contain,omitempty"`
 	Keys    []string               `json:"keys,omitempty"`
 	Equal   map[string]interface{} `json:"equal,omitempty"`
+}
+
+func (e *Expect) Print() {
+	if e.Equal != nil {
+		log.WithField("type", "equal").Info(ToJSONToString(e.Equal))
+	}
+	if e.Contain != nil {
+		log.WithField("type", "contain").Info(ToJSONToString(e.Contain))
+	}
+	if e.Keys != nil {
+		log.WithField("type", "keys").Info(e.Keys)
+	}
 }
 
 // GetTest returns the configuration of the test mentioned in current
