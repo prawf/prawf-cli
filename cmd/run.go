@@ -112,7 +112,9 @@ func MakeRequest(
 
 	// Log the response
 	data := string(b)
-
+	if outputFmt == "json" {
+		data = utils.PrintJSONResponse(b)
+	}
 	log.Info(data)
 }
 

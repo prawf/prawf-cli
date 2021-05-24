@@ -79,3 +79,17 @@ func ToJSONToString(m map[string]interface{}) string {
 	}
 	return string(j)
 }
+
+func PrintJSONResponse(resp []byte) string {
+	var mapResponse interface{}
+
+	json.Unmarshal(resp, &mapResponse)
+
+	jsonResponse, err := json.Marshal(mapResponse)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return string(jsonResponse)
+}
