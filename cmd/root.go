@@ -74,7 +74,11 @@ func init() {
 }
 
 func Execute() {
-	rootCmd.Execute()
+	err := rootCmd.Execute()
+
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 // loadConfig loads the users config file (prawf.json) if it exists or initialises a new one if it doesn't
@@ -121,6 +125,7 @@ func initConfig(filePath string, fileName string) {
 	log.WithField("file", fileName).Info("File created.")
 }
 
+// validateOutputFlag checks if the output flag has a value that is allowed and sets the formatter
 func validateOutputFlag() {
 	if outputFmt != "" {
 		if outputFmt == "json" {
@@ -131,6 +136,7 @@ func validateOutputFlag() {
 	}
 }
 
+// setVerboseMode sets the log level to debug
 func setVerboseMode() {
 	if verbose {
 		log.SetLevel(log.DebugLevel)

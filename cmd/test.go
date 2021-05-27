@@ -114,8 +114,10 @@ func TestResponse(
 		log.Fatal(err)
 	}
 
+	// Check if the expect{} is not empty
 	if !reflect.DeepEqual(utils.Expect{}, expect) {
 		var testResult string
+		// Check if the expected response and the actual response match
 		if AssertResponse(data, expect) {
 			testResult = "pass"
 		} else {
@@ -157,12 +159,16 @@ func TestResponse(
 
 }
 
+// AssertResponse checks if the response is equal to/contain/haskey expected response
 func AssertResponse(data interface{}, expect utils.Expect) bool {
 	// The response could be an interface or an array of interface
 	if m, ok := data.([]interface{}); ok {
+		// First check for complete equality if it is specified and return that(skip the other assertions)
 		if expect.Equal != nil {
 			return AssertEqual(m, expect.Equal)
 		}
+		// If the response is an array of objects(interface), loop through each and return at first true
+		// Returns whichever(contain or key) matches first
 		for _, item := range m {
 			if expect.Contain != nil {
 				if AssertContain(item.(map[string]interface{}), expect) {
@@ -177,6 +183,7 @@ func AssertResponse(data interface{}, expect utils.Expect) bool {
 		}
 		return false
 	} else if item, ok := data.(map[string]interface{}); ok {
+		// Follows the same pattern as for the array of objects(interface)
 		if expect.Equal != nil {
 			return AssertEqual(item, expect.Equal)
 		}
@@ -192,10 +199,12 @@ func AssertResponse(data interface{}, expect utils.Expect) bool {
 	return false
 }
 
+// Checks if the response is exactly equal to the value specified in "equal" key under "expect"
 func AssertEqual(r interface{}, e interface{}) bool {
 	return reflect.DeepEqual(r, e)
 }
 
+// Checks if the response contains the key-value pair specified in "contain" key under "expect"
 func AssertContain(item map[string]interface{}, expect utils.Expect) bool {
 	for key, value := range expect.Contain {
 		if rValue, ok := item[key]; ok {
@@ -209,6 +218,7 @@ func AssertContain(item map[string]interface{}, expect utils.Expect) bool {
 	return true
 }
 
+// Checks if the response contains the list of keys specified in "keys" key under "expect"
 func AssertKeys(item map[string]interface{}, expect utils.Expect) bool {
 	for _, key := range expect.Keys {
 		if _, ok := item[key]; !ok {

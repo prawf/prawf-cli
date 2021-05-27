@@ -41,6 +41,8 @@ type Expect struct {
 	Equal   map[string]interface{} `json:"equal,omitempty"`
 }
 
+// (e *Expect) Print prints the expected response in the specifed format
+// TODO: Too complicated and WET code. Make it DRY
 func (e *Expect) Print(testResult string, outputFmt string) {
 	if e.Equal != nil {
 		el := log.New().WithField("type", "equal")

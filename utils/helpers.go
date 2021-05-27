@@ -52,7 +52,7 @@ func FileExists(filePath string) bool {
 	return !info.IsDir()
 }
 
-// Returns the path to the config file
+// GetFilePath returns the path to the config file
 func GetFilePath(configPath string, configName string) (string, string) {
 	fileName := configName + "." + ConfigType
 	filePath := filepath.Join(configPath, fileName)
@@ -72,6 +72,7 @@ func ContentTypeIsHTML(resp *http.Response) bool {
 	return false
 }
 
+// ToJSONToString converts string to JSON and back to string to properly format the output
 func ToJSONToString(m map[string]interface{}) string {
 	j, err := json.MarshalIndent(m, "  ", "")
 	if err != nil {
@@ -80,10 +81,15 @@ func ToJSONToString(m map[string]interface{}) string {
 	return string(j)
 }
 
+// PrintJSONResponse formats a json response and returns it
 func PrintJSONResponse(resp []byte) string {
 	var mapResponse interface{}
 
-	json.Unmarshal(resp, &mapResponse)
+	err := json.Unmarshal(resp, &mapResponse)
+
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	jsonResponse, err := json.Marshal(mapResponse)
 

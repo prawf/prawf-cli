@@ -1,4 +1,4 @@
-name: prawf Build and Release
+name: prawf Release
 
 on:
   push:
@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   build:
-    name: prawf Build and Release
+    name: prawf Release
     runs-on: ubuntu-latest
     steps:
       -

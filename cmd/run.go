@@ -142,6 +142,7 @@ func newRequestBody(body map[string]interface{}) (*bytes.Buffer, error) {
 // 	return data, nil
 // }
 
+// NewRequest creates a new HTTP request
 func NewRequest(
 	url string,
 	path string,

@@ -17,8 +17,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
-	"log"
-
 	"github.com/spf13/cobra"
 )
 
@@ -30,13 +28,5 @@ var reqCmd = &cobra.Command{
 	Aliases: []string{"req", "r"},
 	Args:    cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		switch args[0] {
-		case "get":
-		case "post":
-		default:
-			log.Fatalf("Invalid HTTP request %s. Please specify a valid request.", args[0])
-
-		}
-
 	},
 }
