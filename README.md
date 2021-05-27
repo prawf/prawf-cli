@@ -30,3 +30,48 @@
         <img alt="screenshot" src="https://raw.githubusercontent.com/prawf/prawf-cli/master/screenshot.png">
     </a>
 </div>
+
+[prawf](https://prawf.github.io/) is a lightweight and easy-to-use HTTP API testing platform built into an elegant CLI.
+
+Here are some reasons why you might want to use prawf-
+
+🏋️‍♂️ Lightweight- Does not add any overhead to your software
+
+🧰 Cross platform- Compiled to a binary and works on Windows, Mac and Linux
+
+📝 Declarative tests- Forget all those flags you use to send a request and write your tests in a file
+
+🧱 Structured logs- Get structured logs so you do not have to spend hours debugging
+
+🚰 Built-in CI/CD support- Ship your applications bug free by adding to your CI/CD pipelines
+
+🔓 Free and open-source- It always will be
+
+# Quick Start
+
+* Install prawf- See the [Installation](#installation) docs.
+
+* Open up your project folder. If you do have a project yet and is just testing prawf, you can create an empty folder.
+
+* Run `prawf init` to create a `prawf.json` configuration file and initialise it.
+
+> By default, prawf will initialise the prawf.json configuration file with the API endpoints from jsonplaceholder.typicode.com. You can use this for testing out the capabilities of prawf.
+
+* Edit the `prawf.json` configuration file if you are testing a custom application. You can leave it as it is if you are just testing out prawf.
+
+* Run `prawf run` to send requests to the endponits specified in your configuration file.
+
+* Run `prawf test` to test the endpoints with the expected responses.
+
+# Installation
+
+Download prawf- Go to the [releases page](https://github.com/prawf/prawf-cli/releases) and download the zip file corresponding to your operating system.
+
+Extract the package.
+
+Navigate to the extracted folder.
+
+Run `export PATH=$PWD:$PATH`
+
+Check your installation by running `prawf version`.
+
