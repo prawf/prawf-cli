@@ -1,6 +1,6 @@
 <div align="center">
     <h1>prawf-cli</h1> 
-    <p>Easy to use HTTP API testing framework built into an elegant CLI</p>
+    <p>🧪 Easy to use HTTP API testing framework built into an elegant CLI</p>
     <a href="https://github.com/prawf/prawf-cli/relea" target="_blank">
         <img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/prawf/prawf-cli">
     </a>
@@ -31,9 +31,7 @@
     </a>
 </div>
 
-[prawf](https://prawf.github.io/) is a lightweight and easy-to-use HTTP API testing platform built into an elegant CLI.
-
-Here are some reasons why you might want to use prawf-
+# Why use prawf?
 
 🏋️‍♂️ Lightweight- Does not add any overhead to your software
 
@@ -45,11 +43,11 @@ Here are some reasons why you might want to use prawf-
 
 🚰 Built-in CI/CD support- Ship your applications bug free by adding to your CI/CD pipelines
 
-🔓 Free and open-source- It always will be
+🔓 Free and open-source- It is and always will be
 
 # Quick Start
 
-* Install prawf- See the [Installation](#installation) docs.
+* Install prawf- See the [Installation](#installation) guide.
 
 * Open up your project folder. If you do have a project yet and is just testing prawf, you can create an empty folder.
 
@@ -65,13 +63,35 @@ Here are some reasons why you might want to use prawf-
 
 # Installation
 
-Download prawf- Go to the [releases page](https://github.com/prawf/prawf-cli/releases) and download the zip file corresponding to your operating system.
+Create a new directory to download prawf-
 
-Extract the package.
+```shell
+mkdir prawf
+```
 
-Navigate to the extracted folder.
+Download prawf- Go to the [releases page](https://github.com/prawf/prawf-cli/releases) to view available downloads.
 
-Run `export PATH=$PWD:$PATH`
+Replace the URL below with the link to the `tar.gz` file for your particular operating system and run the command to download prawf-
 
-Check your installation by running `prawf version`.
+```shell
+curl -OL https://github.com/prawf/prawf-cli/releases/latest/download/prawf_0.0.1-alpha_Linux_x86_64.tar.gz
+```
+
+Extract the package. Replace the file name with the filename of your download-
+
+```
+tar -xvzf prawf_0.0.1-alpha_Linux_x86_64.tar.gz
+```
+
+Add prawf to your path(Linux, macOS)-
+
+```
+export PATH=$PWD:$PATH
+```
+
+Check your installation-
+
+```
+prawf version
+```
 
