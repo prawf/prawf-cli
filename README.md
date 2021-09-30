@@ -1,6 +1,6 @@
 <div align="center">
     <h1>prawf-cli</h1> 
-    <p>🧪 Easy to use HTTP API testing framework built into an elegant CLI</p>
+    <p>🧪 Easy to use API testing framework built into an elegant CLI</p>
     <a href="https://github.com/prawf/prawf-cli/relea" target="_blank">
         <img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/prawf/prawf-cli">
     </a>
@@ -33,7 +33,7 @@
 
 # What is prawf?
 
-🧪 prawf is a HTTP API testing platform that is easy to use and does not add any overhead to your project.
+🧪 prawf is an API testing platform that is easy to use and does not add any overhead to your project.
 
 You can use prawf to define tests for your API endpoints and use that definitions to run tests.
 
@@ -197,7 +197,7 @@ The following could be configured in the `prawf.json` file. See the [example bel
             
             `path`- The path which will be added to the URL.
             
-            `method`- Type of HTTP request.
+            `method`- Type of request.
             
             `query`- The query to add to the request.
             
